@@ -1,0 +1,446 @@
+/* ==========================================================================
+   Aguda 107 — 9:16 Stage Scaling, SOURCE.mp4 HUD Overlay & External Controls
+   ========================================================================== */
+
+#hud-root {
+  position: absolute;
+  inset: 0;
+  width: 576px;
+  height: 1024px;
+  z-index: 12;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Top Mission Card (exact 576x1024 logical bbox: x=38..538, y=52..170)
+   -------------------------------------------------------------------------- */
+.hud-mission-card {
+  position: absolute;
+  left: 38px;
+  top: 52px;
+  width: 500px;
+  height: 118px;
+  border-radius: 20px;
+  background: linear-gradient(
+    180deg,
+    rgba(16, 21, 42, 0.95) 0%,
+    rgba(10, 14, 34, 0.96) 100%
+  );
+  border: 2.5px solid #6CE4EC;
+  box-shadow:
+    0 0 12px rgba(92, 225, 230, 0.30),
+    0 6px 20px rgba(4, 8, 22, 0.45);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Inner inset rose/magenta hairline */
+.hud-mission-card::after {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: 14px;
+  border: 1.2px solid rgba(196, 108, 158, 0.58);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Cyan shimmer sweep overlay for mission transitions */
+.hud-mission-card::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -45%;
+  width: 38%;
+  height: 140%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(108, 228, 236, 0.08) 35%,
+    rgba(154, 246, 255, 0.42) 50%,
+    rgba(108, 228, 236, 0.08) 65%,
+    transparent 100%
+  );
+  transform: translateX(-120%) skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.hud-mission-copy {
+  position: absolute;
+  left: 44px;
+  top: 24px;
+  right: 112px;
+  z-index: 1;
+}
+
+.hud-mission-title {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 27px;
+  line-height: 1.06;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.hud-mission-title.is-long {
+  font-size: 22.5px;
+  letter-spacing: 0.02em;
+  line-height: 1.24;
+}
+
+.hud-mission-subtitle {
+  margin: 8px 0 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  line-height: 1.15;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: #67DCE6;
+  white-space: pre;
+}
+
+.hud-mission-icon {
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-48%);
+  width: 56px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.hud-mission-icon svg {
+  display: block;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.35));
+}
+
+/* Mission Transition Animation */
+.hud-mission-card.mission-transition {
+  animation: hud-card-pulse 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hud-mission-card.mission-transition::before {
+  opacity: 1;
+  animation: hud-cyan-shimmer 640ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hud-mission-card.mission-transition .hud-mission-copy {
+  animation: hud-vertical-swap 440ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hud-mission-card.mission-transition .hud-mission-icon {
+  animation: hud-icon-swap 460ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes hud-card-pulse {
+  0% {
+    box-shadow:
+      0 0 12px rgba(92, 225, 230, 0.30),
+      0 6px 20px rgba(4, 8, 22, 0.45);
+  }
+  38% {
+    box-shadow:
+      0 0 24px rgba(108, 228, 236, 0.72),
+      0 6px 22px rgba(4, 8, 22, 0.52);
+  }
+  100% {
+    box-shadow:
+      0 0 12px rgba(92, 225, 230, 0.30),
+      0 6px 20px rgba(4, 8, 22, 0.45);
+  }
+}
+
+@keyframes hud-cyan-shimmer {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(460%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+@keyframes hud-vertical-swap {
+  0% {
+    opacity: 0;
+    transform: translateY(11px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hud-icon-swap {
+  0% {
+    opacity: 0;
+    transform: translateY(calc(-48% + 12px)) scale(0.84);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(calc(-48% - 2px)) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-48%) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Bottom RTL Subtitle Bar (exact 576x1024 logical bbox: x=56..520, y=904..950)
+   -------------------------------------------------------------------------- */
+.hud-subtitle-bar {
+  position: absolute;
+  left: 56px;
+  top: 904px;
+  width: 464px;
+  height: 46px;
+  border-radius: 8px;
+  background: rgba(9, 21, 39, 0.92);
+  border: 1.5px solid #59AAB8;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.34);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20px;
+}
+
+.hud-subtitle-text {
+  font-family: 'Heebo', sans-serif;
+  font-weight: 500;
+  font-size: 17.5px;
+  line-height: 1.15;
+  color: #F2F7FA;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 180ms ease, text-shadow 180ms ease;
+}
+
+.hud-subtitle-bar.is-celebratory {
+  border-color: #6CE4EC;
+  box-shadow:
+    0 0 12px rgba(108, 228, 236, 0.32),
+    0 2px 10px rgba(0, 0, 0, 0.34);
+}
+
+.hud-subtitle-bar.is-celebratory .hud-subtitle-text {
+  color: #FFF6D6;
+  text-shadow: 0 0 8px rgba(244, 196, 78, 0.48);
+}
+
+/* --------------------------------------------------------------------------
+   External Controls Dock (strictly OUTSIDE #game-stage)
+   -------------------------------------------------------------------------- */
+#controls-dock {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 248px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(11, 16, 34, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(108, 228, 236, 0.28);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  color: #EAF4FA;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 50;
+}
+
+#controls-dock.is-hidden,
+body.clean-mode #controls-dock {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  #controls-dock {
+    display: none !important;
+  }
+}
+
+/* Narrow/tall viewports without a wide side gutter: float compact bar at bottom */
+#controls-dock.is-dock-bottom {
+  top: auto;
+  right: auto;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: calc(100vw - 24px);
+  padding: 10px 14px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#controls-dock.is-dock-bottom .dock-header,
+#controls-dock.is-dock-bottom .dock-hint {
+  display: none;
+}
+
+#controls-dock.is-dock-bottom .dock-stats {
+  border-bottom: none;
+  padding-bottom: 0;
+  padding-right: 8px;
+  border-right: 1px solid rgba(108, 228, 236, 0.2);
+}
+
+#controls-dock.is-dock-bottom .dock-actions {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6CE4EC;
+}
+
+.dock-phase-badge {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(108, 228, 236, 0.14);
+  border: 1px solid rgba(108, 228, 236, 0.35);
+  font-size: 10px;
+  color: #DDF8FB;
+}
+
+.dock-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dock-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dock-stat-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(234, 244, 250, 0.58);
+  text-transform: uppercase;
+}
+
+.dock-stat-value {
+  font-size: 14px;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.dock-stat-value.is-xp {
+  color: #F4C44E;
+}
+
+.dock-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.dock-btn {
+  appearance: none;
+  border: 1px solid rgba(108, 228, 236, 0.28);
+  background: rgba(20, 29, 58, 0.85);
+  color: #EAF4FA;
+  border-radius: 9px;
+  padding: 8px 11px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 100ms ease;
+}
+
+.dock-btn:hover:not(:disabled) {
+  background: rgba(31, 46, 86, 0.95);
+  border-color: rgba(108, 228, 236, 0.65);
+}
+
+.dock-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.dock-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.dock-btn.is-active {
+  background: rgba(108, 228, 236, 0.18);
+  border-color: #6CE4EC;
+  color: #FFFFFF;
+}
+
+.dock-btn.is-muted {
+  background: rgba(232, 93, 117, 0.16);
+  border-color: rgba(232, 93, 117, 0.6);
+  color: #FFD7DF;
+}
+
+.dock-btn.is-audio-prompt {
+  background: rgba(244, 196, 78, 0.16);
+  border-color: rgba(244, 196, 78, 0.68);
+  color: #FFE8A3;
+}
+
+.dock-kbd {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.09);
+  color: rgba(234, 244, 250, 0.78);
+}
+
+.dock-hint {
+  font-size: 10px;
+  line-height: 1.4;
+  color: rgba(234, 244, 250, 0.56);
+  margin: 2px 0 0;
+}

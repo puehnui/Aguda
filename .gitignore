@@ -1,0 +1,15 @@
+# Dependencies & build output
+node_modules/
+dist/
+
+# Local source/reference/QA files (not needed for the live web app)
+SOURCE.mp4
+reference_frames/
+scripts/
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Aguda 107 — Courtyard Catch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@500;700&family=Montserrat:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #060913;
+        font-family: 'Montserrat', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        user-select: none;
+        touch-action: none;
+      }
+      #app {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      #stage-wrapper {
+        position: relative;
+        width: calc(576px * var(--stage-scale, 1));
+        height: calc(1024px * var(--stage-scale, 1));
+        flex: 0 0 auto;
+      }
+      #game-stage {
+        position: relative;
+        width: 576px;
+        height: 1024px;
+        transform: scale(var(--stage-scale, 1));
+        transform-origin: top left;
+        overflow: hidden;
+        background: #0b0f1f;
+      }
+      #webgl-layer,
+      #cinematics-layer {
+        position: absolute;
+        inset: 0;
+        width: 576px;
+        height: 1024px;
+      }
+      #webgl-layer {
+        z-index: 1;
+      }
+      #webgl-layer canvas {
+        display: block;
+        width: 576px !important;
+        height: 1024px !important;
+      }
+      #cinematics-layer {
+        z-index: 2;
+        pointer-events: none;
+        opacity: 1;
+        transition: opacity 350ms ease;
+      }
+      #cinematics-layer.is-hidden {
+        opacity: 0;
+      }
+      #cinematics-layer video {
+        position: absolute;
+        inset: 0;
+        width: 576px;
+        height: 1024px;
+        object-fit: cover;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="stage-wrapper">
+        <main id="game-stage" aria-label="Aguda 9:16 Game Stage">
+          <div id="webgl-layer"></div>
+          <div id="cinematics-layer"></div>
+        </main>
+      </div>
+      <aside id="controls-dock" aria-label="Game Controls"></aside>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

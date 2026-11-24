@@ -1,0 +1,75 @@
+{
+  "logicalWidth": 576,
+  "logicalHeight": 1024,
+  "characterCanvasWidth": 768,
+  "characterCanvasHeight": 1024,
+  "characterAnchorOffsetX": -140,
+  "sackMouth": {
+    "cx": 332,
+    "cy": 608,
+    "rx": 72,
+    "ry": 34,
+    "clipFloorY": 840
+  },
+  "characterPivot": {
+    "x": 332,
+    "y": 512
+  },
+  "sackPivot": {
+    "x": 332,
+    "y": 760
+  },
+  "background": "./assets/bg_courtyard.png",
+  "characterBack": "./assets/character_back.png",
+  "sackFront": "./assets/sack_front.png",
+  "items": [
+    {
+      "id": "beer_amber_1",
+      "path": "./assets/items/beer_amber_1.png",
+      "category": "beer",
+      "width": 67,
+      "height": 194,
+      "subsurfaceTint": "#FFAA33"
+    },
+    {
+      "id": "beer_amber_2",
+      "path": "./assets/items/beer_amber_2.png",
+      "category": "beer",
+      "width": 73,
+      "height": 196,
+      "subsurfaceTint": "#FF9E2C"
+    },
+    {
+      "id": "snack_bag_orange_blue",
+      "path": "./assets/items/snack_bag_orange_blue.png",
+      "category": "snack",
+      "width": 122,
+      "height": 168,
+      "subsurfaceTint": "#FFA23A"
+    },
+    {
+      "id": "snack_bag_red_gold",
+      "path": "./assets/items/snack_bag_red_gold.png",
+      "category": "snack",
+      "width": 118,
+      "height": 168,
+      "subsurfaceTint": "#FF8C42"
+    },
+    {
+      "id": "snack_bag_teal_yellow",
+      "path": "./assets/items/snack_bag_teal_yellow.png",
+      "category": "snack",
+      "width": 120,
+      "height": 168,
+      "subsurfaceTint": "#FFD06B"
+    },
+    {
+      "id": "snack_cookie",
+      "path": "./assets/items/snack_cookie.png",
+      "category": "snack",
+      "width": 88,
+      "height": 84,
+      "subsurfaceTint": "#FFBA52"
+    }
+  ]
+}
